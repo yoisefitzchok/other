@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="he">
+<head><meta charset="utf-8">
+<title>מנקלה</title></head>
+<body>
+<input id="k" onchange="eval(document.getElementById('k').value)">
+<script>
+function move (hole, board, first, keep) {
+var stones = board[hole]
+board[hole] = 0
+while (stones-- > 0) {
+if (hole > 11) hole -= 13
+board[++hole]++}
+if (board[hole] > 1 && hole != 6) move (hole, board, first, keep)
+else saved_data.push([first, board.join(), (hole == 6) * 1, board[6] - keep])}
+
+function scan (holes_list, take_list) {
+var take = 6
+while (take-- > 0) {
+board = holes_list.split(",")
+if (board[take] > 0) move(take, board, take_list + (6 - take), board[6])}}
+
+function calculate (stones, holes) {
+if (stones == null) stones = 4; if (holes == null) holes = 6
+start_board = "", saved_data = [], result_data = []
+while (holes-- > 0) start_board += stones
+start_board = start_board.split("").join()
+start_board = start_board + ",0," + start_board
+scan(start_board,"")
+cycle = 0
+while (saved_data.length > 0) {
+result_data.push(saved_data)
+var stop = saved_data.length, run = 0, cycle_data = result_data[cycle++]
+saved_data = []
+while (run < stop) {var part = cycle_data[run++]; if (part[2] > 0) scan(part[1], part[0])}}}
+</script></body></html>
