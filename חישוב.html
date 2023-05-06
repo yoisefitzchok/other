@@ -14,14 +14,14 @@ if (board[hole] > 1 && hole != 6) move (hole, board, first, keep)
 else saved_data.push([first, board.join(), (hole == 6) * 1, board[6] - keep])}
 
 function scan (holes_list, take_list) {
-var take = 6
+var take = board_length
 while (take-- > 0) {
 board = holes_list.split(",")
-if (board[take] > 0) move(take, board, take_list + (6 - take), board[6])}}
+if (board[take] > 0) move(take, board, take_list + (board_length - take), board[6])}}
 
 function calculate (stones, holes) {
 if (stones == null) stones = 4; if (holes == null) holes = 6
-start_board = "", saved_data = [], result_data = []
+start_board = "", saved_data = [], result_data = [], board_length = holes
 while (holes-- > 0) start_board += stones
 start_board = start_board.split("").join()
 start_board = start_board + ",0," + start_board
