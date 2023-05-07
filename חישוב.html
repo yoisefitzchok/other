@@ -8,23 +8,23 @@ function move (hole, board, first, keep) {
 var stones = board[hole]
 board[hole] = 0
 while (stones-- > 0) {
-if (hole > 11) hole -= 13
+if (hole == Math.floor(start_board.length / 2)) hole = -1
 board[++hole]++}
-if (board[hole] > 1 && hole != 6) move (hole, board, first, keep)
-else saved_data.push([first, board.join(), (hole == 6) * 1, board[6] - keep])}
+if (board[hole] > 1 && hole != board_length) move (hole, board, first, keep)
+else saved_data.push([first, board.join(), (hole == board_length) * 1, board[board_length] - keep])}
 
 function scan (holes_list, take_list) {
 var take = board_length
 while (take-- > 0) {
 board = holes_list.split(",")
-if (board[take] > 0) move(take, board, take_list + (board_length - take), board[6])}}
+if (board[take] > 0) move(take, board, take_list + (board_length - take), board[board_length])}}
 
-function calculate (stones, holes) {
+function calculate (stones, holes, side) {
 if (stones == null) stones = 4; if (holes == null) holes = 6
-start_board = "", saved_data = [], result_data = [], board_length = holes
+start_board = "", saved_data = [], result_data = [], board_length = holes * ((side > 1) + 1)
 while (holes-- > 0) start_board += stones
 start_board = start_board.split("").join()
-start_board = start_board + ",0," + start_board
+start_board = start_board + (side > 1 ? "," : ",0,") + start_board + (side > 1 ? ",0" : "")
 scan(start_board,"")
 cycle = 0
 while (saved_data.length > 0) {
