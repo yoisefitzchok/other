@@ -1,0 +1,76 @@
+<!DOCTYPE html><html dir="rtl" lang="he">
+<head><meta charset="utf-8"><title>מעלות</title></head>
+<body><div align="center">
+
+מעלות: <input type="number" step="1" id="deg">
+<br>
+
+מערכת: <select name="sc" id="sc">
+<option>Kelvin</option>
+<option>Rankine</option>
+<option>Leiden</option>
+<option>Fahrenheit</option>
+<option>Rømer</option>
+<option>Newton</option>
+<option>Réaumur</option>
+<option selected>Celsius</option>
+<option>Delisle</option>
+</select>
+
+<br>
+<button onclick="LOG()">חשב</button>
+<p id="P"></p>
+<script>
+
+scales_list = {
+Kelvin: [2772, 273.15],
+Rankine: [1540, 491.67],
+Leiden: [2772, 253],
+Fahrenheit: [1540, 32],
+Rømer: [5280, 7.5],
+Newton: [8400, 0],
+Réaumur: [3465, 0],
+Celsius: [2772, 0],
+Delisle: [-1848, 150]
+}
+
+function FROM(scale, degrees) {
+scale = eval("scales_list." + scale)
+return (degrees - scale[1]) * scale[0]
+}
+
+function TO(scale, units) {
+scale = eval("scales_list." + scale)
+return (units / scale[0] + scale[1])
+}
+
+function FIX(number) {
+number = number.toFixed(10)
+while (number.slice(-1) == 0) number = number.slice(0, -1)
+return Number(number)
+}
+
+function LOG() {
+var degrees = document.getElementById("deg").value
+if (degrees === "") {document.getElementById("P").innerHTML = "הזן מספר תקין"; return 0}
+
+var units = FROM(
+document.getElementById("sc").value,
+degrees * 1)
+
+var list = Object.keys(scales_list), run = 0, result = "<br><table  dir=ltr>"
+while (run < list.length)
+{
+result +=
+"<tr><td>" +
+list[run] +
+"</td><td>=</td><td>" +
+FIX(TO(list[run++], units)) +
+"</td></tr>"
+}
+
+result += "</table>"
+document.getElementById("P").innerHTML = result
+}
+
+</script></div></body></html>
